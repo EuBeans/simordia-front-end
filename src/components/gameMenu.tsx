@@ -15,13 +15,20 @@ import {
   MenuItem,
   InputLabel,
   Select,
-  SelectChangeEvent
+  SelectChangeEvent,
+  List
 } from "@mui/material";
 import {theme} from "../assets/theme";
 import {GameCreateInput, GameLevel, GameMode, GameTheme} from "../model/gameModel";
 import { useAppDispatch, useAppSelector } from "../utils/useAppDispatch";
-import { createGameAction } from "../redux/actions/gameSlice";
-
+import { createGameAction, setCurrentGameRoundTime } from "../redux/actions/gameSlice";
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Dayjs } from 'dayjs';
+import { setRoundPause } from "../redux/actions/gameRoundSlice";
+import BoxTimer from "./boxTimer";
+import RoundTimer from "./roundTimer";
 
 // define word set theme enum
 const WordSetThemes = Object.freeze([
@@ -58,7 +65,8 @@ const GameMenu = () => {
     const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY);
     const [selectedTheme, setSelectedTheme] = useState(DEFAULT_THEME);
     const [rounds, setRounds] = useState<number>(DEFAULT_ROUNDS);
-    
+    const [duration, setDuration] = useState<number>(0);
+
     const dispatch = useAppDispatch();
     
     const handleGameModeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,8 +98,11 @@ const GameMenu = () => {
             max_round_number: rounds,
         }
 
+        if (gameMode === "timed") {
+            dispatch(setCurrentGameRoundTime(duration));
+        }
         dispatch(createGameAction(game));
-        
+        dispatch(setRoundPause(false))
 
     };
     const handleThemeClick = (event: string) => {
@@ -100,6 +111,14 @@ const GameMenu = () => {
 
     const handleRoundsChange = (event: SelectChangeEvent<number>) => {
         setRounds(event.target.value as number);
+    };
+
+    const handleDurationChange = (event:Dayjs  | null) => {
+        if(event === null) return;
+        const minutes = event.minute() | 0;
+        const seconds = event.second();
+        const duration = minutes * 60 + seconds;
+        setDuration(duration);
     };
 
     const renderMenuItems = () => {
@@ -119,17 +138,15 @@ const GameMenu = () => {
     const getChipColor = (themeChosen: string) => {
         const index = WordSetThemes.indexOf(themeChosen);
 
-        if( index % 5 === 0) {
-            return theme.palette.primary;
-        } else if( index % 5 === 1) {
-            return theme.palette.sixtarary  ;
-        } else if( index % 5 === 2) {
-            return theme.palette.thirdary;
-        } else if( index % 5 === 3) {
+        if( index % 3 === 0) {
             return theme.palette.quadrary;
-        } else if( index % 5 === 4) {
-            return theme.palette.quinary;
-        }
+        } else if( index % 3 === 1) {
+            return theme.palette.secondary  ;
+        } else if( index % 3 === 2) {
+            return theme.palette.thirdary;
+        } 
+        
+        return theme.palette.thirdary;
     };
 
 
@@ -138,7 +155,6 @@ const GameMenu = () => {
         flexDirection: "column",
         alignItems: "flex-start",
         justifyContent: "flex-start",
-
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
     };
@@ -158,7 +174,7 @@ const GameMenu = () => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         color: theme.palette.text.primary,
         marginBottom: "2vh",
       };
@@ -175,6 +191,7 @@ const GameMenu = () => {
     const header1Style = {
         fontFamily: theme.typography.fontFamily2,
         fontSize: theme.typography.h1.fontSize,
+        fontWeight: theme.typography.body1.fontWeight,
         color: theme.palette.text.primary,
         textAlign: "center",
     };
@@ -195,27 +212,21 @@ const GameMenu = () => {
     }
 
 
-    const startButtonStyle = {
-        fontFamily: theme.typography.fontFamily,
-        fontSize: theme.typography.h6.fontSize,
-        color: theme.palette.text.primary,
+    const StartGameButtonStyle = {
+        fontFamily: theme.typography.fontFamily2,
+        fontSize: theme.typography.h1.fontSize,
+        fontWeight: theme.typography.h1.fontWeight,
+        color: theme.palette.quadrary.main,
         textAlign: "center",
-        backgroundColor: theme.palette.secondary.main,
-        width: "calc(20vw - 20px)",
-        height: "calc(7vh - 20px)",
-        borderRadius: "5px",
-        border: "1px solid",
-        borderColor: theme.palette.secondary.dark,
-        "&:hover": {
-            backgroundColor: theme.palette.secondary.main,
-            borderColor: theme.palette.secondary.main,
-            boxShadow: "none",
-            //scale transform
-            transform: "scale(1.05)",
-            transition: "transform 0.2s ease-in-out",
-            
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid',
+        borderColor: theme.palette.quadrary.main,
+        //hover
+        '&:hover': {
+            backgroundColor: theme.palette.quadrary.main,
+            color: theme.palette.background.paper,
         },
-    };
+    }
 
     const difficultySliderStyle = {
         color: theme.palette.primary.light,
@@ -263,36 +274,64 @@ const GameMenu = () => {
 
     };
     const radioStyle = {
-        color: theme.palette.secondary.main,
+        color: theme.palette.quadrary.main,
         '&, &.Mui-checked': {
-            color: theme.palette.secondary.main,
+            color: theme.palette.quadrary.main,
         },
     };
 
     const selectStyle = {
-        color: theme.palette.secondary.main,
-        width: "calc( 80px)",
+        color: theme.palette.quadrary.main,
+        width: "calc( 100px)",
         '& .MuiSelect-select': {
-            color: theme.palette.secondary.main,
+            color: theme.palette.quadrary.main,
         },
         '& .MuiSelect-icon': {
-            color: theme.palette.secondary.main,
+            color: theme.palette.quadrary.main,
         },
         //change border color
         '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.secondary.main,
+            borderColor: theme.palette.quadrary.main,
         },
         //change border color when focused
         '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.secondary.main,
+            borderColor: theme.palette.quadrary.main,
         },
         //change border color when focused
         '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.secondary.main,
+            borderColor: theme.palette.quadrary.main,
         },
         ml: 2,
 
 
+    }
+
+    const TimePickerStyle = {
+        color: theme.palette.quadrary.main,
+        width: "calc( 80px)",
+        borderColor: theme.palette.quadrary.main,
+        '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.quadrary.main,
+        },
+
+        //text color
+        '& .MuiInputBase-input': {
+            color: theme.palette.quadrary.main,
+        },
+
+        //change border color when focused
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.quadrary.main,
+        },
+        
+    }
+
+    const TimePickerInputStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: theme.palette.quadrary.main,
     }
 
 
@@ -354,11 +393,12 @@ const GameMenu = () => {
                 </Grid>
                 <Grid container sx={menuRowContainerStyle}>
                     <Grid container  sx ={titleContainerStyle}>
-                        <Typography sx={header2Style}>Theme</Typography>
+                        <Typography sx={header2Style}>Settings</Typography>
                     </Grid>
-                    <InputLabel id="number-of-rounds-label" sx={header3Style}>Number of Rounds:</InputLabel>
 
                     <FormControl variant="outlined">
+                    <Typography id="number-of-rounds-label" sx={header3Style}># of Rounds:</Typography>
+
                         <Select
                             labelId="number-of-rounds-label"
                             id="number-of-rounds-select"
@@ -369,6 +409,19 @@ const GameMenu = () => {
                             {renderMenuItems()}
                         </Select>
                     </FormControl>
+
+                    <Grid sx={TimePickerInputStyle}>
+                        <Typography id="number-of-rounds-label" sx={header3Style}>Duration:</Typography>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <TimePicker 
+                                    sx={TimePickerStyle}
+                                    views={['minutes', 'seconds']}
+                                    format="mm:ss"
+                                    onChange={handleDurationChange}
+                                    /> 
+                            </LocalizationProvider>
+                    </Grid>
+
                 </Grid>
 
                 <Grid container sx={menuRowContainerStyle}>
@@ -401,11 +454,16 @@ const GameMenu = () => {
 
                 <Grid container sx={menuRowContainerStyle}>
 
-                    <Button variant="contained" sx={startButtonStyle} onClick={handleGameStart}>
+                    <Button variant="contained" sx={StartGameButtonStyle} onClick={handleGameStart}>
                         Start Game
                     </Button>
                 </Grid>
+
+                
             </Grid>
+          
+
+
         </Grid>
     )
 }       

@@ -3,7 +3,9 @@
 import axios from "axios";
 import { UserLoginform, UserLoginResponse, ValidateResponse } from "../model/usersModel";
 
-const baseUrl = "https://simordia-backend.herokuapp.com/auth";
+export const url = 'http://127.0.0.1:5000'
+
+const baseUrl = `${url}/auth`;
 
 const token = localStorage.getItem('token');
 

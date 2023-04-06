@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Container,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -39,11 +40,12 @@ const GameContainer = () => {
 
     const GameBoxBorderStyle = {
         border: "2px solid",
-        borderColor: theme.palette.secondary.main,
+        borderColor: theme.palette.quadrary.main,
         borderRadius: "10px",
         padding: "10px",
         width: "80%",
-        height: "70%",
+        height: "100%",
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -62,10 +64,10 @@ const GameContainer = () => {
     return (
         <Box sx={GameContainerStyle}>
             <GameManager/>
-            <Box sx={GameBoxBorderStyle}>
+            <Container maxWidth={"lg"} sx={GameBoxBorderStyle}>
                 {!gameOn &&  <GameMenu /> }
                 {gameOn && <GameLoader/>}
-            </Box>
+            </Container>
         </Box>
     );
 };

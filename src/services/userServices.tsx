@@ -4,8 +4,9 @@
 import axios from "axios";
 import { Bool } from "reselect/es/types";
 import { UserRegisterform, UserRegisterResponse } from "../model/usersModel";
+import {url} from "./authServices";
 
-const baseUrl = "https://simordia-backend.herokuapp.com/user/";
+const baseUrl = `${url}/user/`;
 
 
 

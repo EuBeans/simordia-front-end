@@ -1,23 +1,34 @@
 //react component for the input guess field
 import * as React from 'react';
 import {useState} from 'react';
-import {useAppDispatch} from '../utils/useAppDispatch';
-import {setGuessWord} from '../redux/actions/guessSlice';
-
+import {createRoundWord, setCurrentRoundWord} from '../redux/actions/roundWordSlice';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {theme} from '../assets/theme';
-import { styled } from '@mui/material/styles';
-
+import { getCurrentGameRound} from '../redux/selector/gameRoundSelector';
+import { useAppDispatch, useAppSelector } from '../utils/useAppDispatch';
+import {RoundWordInput} from '../model/roundWordModel';
 export default function GuessInput() {
     const [guess, setGuess] = useState('');
     const dispatch = useAppDispatch();
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setGuess(event.target.value);
     };
+
+    const currentGameRound =  useAppSelector(getCurrentGameRound);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        dispatch(setGuessWord(guess));
+
+        //dispatch(setCurrentRoundWord(''));
+        if(currentGameRound){
+            const roundWordInput: RoundWordInput = {
+                round_id: currentGameRound.round_id,
+                word: guess
+            }
+            dispatch(createRoundWord(roundWordInput));
+        }
+
         setGuess('');
     };
 
@@ -29,28 +40,43 @@ export default function GuessInput() {
         width: "100%",
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
+        px: 2,
 
     }
 
     const CssTextField = {
         color: theme.palette.text.primary,
+
+        //change backgroundcolor 
+        backgroundColor: theme.palette.background.paper,
+        
+
         '& label.Mui-focused': {
-            color: theme.palette.secondary.main,
+            color: theme.palette.quadrary.main,
         },
         '& .MuiInput-underline:after': {
-            borderBottomColor: theme.palette.secondary.main,
+            borderBottomColor: theme.palette.quadrary.main,
         },
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
                 borderColor: theme.palette.primary.light,
+                borderRadius: 1,
             },
             '&:hover fieldset': {
-                borderColor: theme.palette.secondary.main,
+                borderColor: theme.palette.quadrary.main,
             },
             '&.Mui-focused fieldset': {
-                borderColor: theme.palette.secondary.main,
+                borderColor: theme.palette.quadrary.main,
             },
         },
+    }
+
+    const inputPlaceHolderTextStyle = {
+        color: theme.palette.text.primary,
+        fontSize: theme.typography.h5.fontSize,
+        fontWeight: theme.typography.h5.fontWeight,
+        fontFamily: theme.typography.fontFamily,
+        
     }
     
     return (
@@ -64,13 +90,13 @@ export default function GuessInput() {
             <TextField
                 sx={CssTextField}
                 fullWidth 
-                label="Guess"
+                label="Type Here"
                 id="outlined-basic"
                 variant="outlined"
                 value={guess}
                 onChange={handleChange}
-                InputLabelProps={{style: {color: theme.palette.text.primary}}}
-                inputProps={{style: {color: theme.palette.text.primary}}}
+                InputLabelProps={{style: inputPlaceHolderTextStyle}}
+                inputProps={{style: inputPlaceHolderTextStyle}}
             />
         </Box>
     );

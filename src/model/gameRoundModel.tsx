@@ -14,6 +14,7 @@ export interface GameRoundListResponse{
 }
 
 export interface GameRound {
+    round_id: string;
     game_id: string;
     round_number: number;
     round_word: string;
@@ -27,6 +28,19 @@ export interface GameRound {
 export enum GameRoundStatus {
     in_progress = "in_progress",
     completed = "completed",
+    timed_out = "timed_out",
+    skipped = "skipped"
 }
 
+export interface EndGameRoundInput {
+    game_round_id : string,
+    status: GameRoundStatus
+}
+
+export interface EndGameRoundResponse{
+    status: string;
+    message: string;
+    prev_game_round: GameRound;
+    new_game_round?: GameRound;
+}
 

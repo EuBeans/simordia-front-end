@@ -2,9 +2,9 @@
 //
 
 import axios from "axios";
-import {GameRound,GameRoundListResponse,GameRoundResponse,GameRoundInput,GameRoundStatus} from "../model/gameRoundModel";
-
-const baseUrl = "https://simordia-backend.herokuapp.com/game_round";
+import {GameRound,GameRoundListResponse,GameRoundResponse,GameRoundInput, EndGameRoundResponse, EndGameRoundInput} from "../model/gameRoundModel";
+import {url} from "./authServices";
+const baseUrl = `${url}/game_round`;
 
 export const createNewGameRound = async (gameRound: GameRoundInput) : Promise<GameRoundResponse> => {
     const response = await axios.post(`${baseUrl}/`, gameRound);
@@ -18,4 +18,8 @@ export const getAllGameRounds = async (game_id: string) : Promise<GameRoundListR
 }
 
 
+export const endGameRound = async (endGameRoundInput: EndGameRoundInput) : Promise<EndGameRoundResponse> => {
+    const response = await axios.patch(`${baseUrl}/`, {...endGameRoundInput});
+    return response.data;
+}
 

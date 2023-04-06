@@ -47,7 +47,7 @@ export const theme = {
             light: '#000000',
         },
         warning: {
-            main: '#000000',
+            main: '#F2C94C',
             dark: '#000000',
             light: '#000000',
         },
@@ -57,18 +57,19 @@ export const theme = {
             light: '#000000',
         },
         success: {
-            main: '#000000',
+            main: '#04ca9f',
             dark: '#000000',
             light: '#000000',
         },
         background: {
             default: '#282c34',
-            light: '#ffffff',
+            light: '#353942',
             special:'#04ca9f',
             secondary: '#adb4b4',
             thirdary: '#5c9c96',
             fifth: '#3a7e7d',
-            paper: '#000000',
+            paper: '#343A43',
+            paper2: '#323740',
         },
         text: {
             primary: 'white',
