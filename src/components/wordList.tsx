@@ -28,7 +28,11 @@ export default function WordList() {
 
     const ListBoxStyle = {
         width: "100%",
+        //set height the parent container
         height: "100%",
+        paddingTop: "10px",
+        
+
     }
 
     //render list of words, callback for words

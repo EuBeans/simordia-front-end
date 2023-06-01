@@ -37,7 +37,6 @@ const GameRound = () => {
         height: "100%",
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
-        overflow: "hidden",
         
 
     };
@@ -75,13 +74,12 @@ const GameRound = () => {
 
     const WordListBoxStyle = {
         display: "flex",
-        overflow: "auto",
-        scrollbarWidth: 'none', // remove scrollbar in Firefox 
-        '-ms-overflow-style': 'none', // remove scrollbar in IE and Edge
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        overflowY: 'auto',
         width: "100%",
+        height: "65vh",
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
         
@@ -115,6 +113,11 @@ const GameRound = () => {
         dispatch(setRoundPause(false))
     }
 
+    const endGame = () => {
+        //TODO: end game
+    }
+
+
     const renderButton = () => {
         if(currentGameWord && currentGameRound && currentGame){
             if(currentGameWord?.distance === 0 && currentGameRound?.round_number < currentGame?.max_round_number){
@@ -129,29 +132,39 @@ const GameRound = () => {
         }
     }
 
+    const fixedBoxStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        backgroundColor: theme.palette.background.default,
 
+    }
 
     return (
         <Container maxWidth={'sm'}>
    
             <Box sx={GameRoundContainerStyle}>
-
-                <Box sx={InfoBoxStyle}>
-                    <Typography sx={InfoHeaderStyle}>Round: {currentGameRound?.round_number}</Typography>
-                    <Typography sx={InfoHeaderStyle}>Guesses: {allRoundWords?.length}</Typography>
-                </Box>
-                <Box sx={InputBoxStyle}>
-                    <GuessInput/>
-                </Box>
-                <Box sx={GuessResponseBoxStyle}>
-                    <GuessResponse/>
-                </Box>
-                <Box sx={WordListBoxStyle}>
+                <Grid sx={fixedBoxStyle}>
+                        
+                    <Box sx={InfoBoxStyle}>
+                        <Typography sx={InfoHeaderStyle}>Round: {currentGameRound?.round_number}</Typography>
+                        <Typography sx={InfoHeaderStyle}>Guesses: {allRoundWords?.length}</Typography>
+                    </Box>
+                    <Box sx={InputBoxStyle}>
+                        <GuessInput/>
+                    </Box>
+                    <Box sx={GuessResponseBoxStyle}>
+                        <GuessResponse/>
+                    </Box>
+                </Grid>
+                <Grid sx={WordListBoxStyle}>
                     <WordList/>
-                </Box>
-                <Box sx={ButtonBoxStyle}>
+                </Grid>
+                <Grid sx={ButtonBoxStyle}>
                     {renderButton()}
-                </Box>
+                </Grid>
             </Box>
         </Container>
     )

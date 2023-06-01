@@ -71,7 +71,7 @@ function RoundTimer(
 
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex'}}>
-            <CircularProgress variant="determinate" value={progress} size="7vh" sx={timerStyle}  />
+            <CircularProgress variant="determinate" value={progress} size="70px" sx={timerStyle}  />
                 <Box
                     sx={{
                         top: 0,

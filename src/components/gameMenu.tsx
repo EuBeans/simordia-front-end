@@ -25,10 +25,9 @@ import { createGameAction, setCurrentGameRoundTime } from "../redux/actions/game
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { setRoundPause } from "../redux/actions/gameRoundSlice";
-import BoxTimer from "./boxTimer";
-import RoundTimer from "./roundTimer";
+
 
 // define word set theme enum
 const WordSetThemes = Object.freeze([
@@ -56,7 +55,8 @@ const WordSetThemes = Object.freeze([
     "history",
   ]);
 
-const DEFAULT_ROUNDS = 5;
+const DEFAULT_TIMER_DURATION : Dayjs = dayjs().minute(2).second(30) ;
+const DEFAULT_ROUNDS = 3;
 const DEFAULT_GAME_MODE = "timed";
 const DEFAULT_DIFFICULTY = 1;
 const DEFAULT_THEME = "sports";
@@ -369,7 +369,7 @@ const GameMenu = () => {
                                 onChange={handleGameModeChange}
                             >
                             <FormControlLabel value="timed"  sx={header3Style} control={<Radio sx={radioStyle}/>} label="Timed" />
-                            <FormControlLabel value="multiplayer" sx={header3Style}  control={<Radio sx={radioStyle}/>} label="Multiplayer" />
+                            <FormControlLabel value="multiplayer" sx={header3Style}  control={<Radio sx={radioStyle}/>} label="Multiplayer" disabled />
                         </RadioGroup>
                     </FormControl>
                 </Grid>
@@ -417,6 +417,7 @@ const GameMenu = () => {
                                     sx={TimePickerStyle}
                                     views={['minutes', 'seconds']}
                                     format="mm:ss"
+                                    value={DEFAULT_TIMER_DURATION}
                                     onChange={handleDurationChange}
                                     /> 
                             </LocalizationProvider>

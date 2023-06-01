@@ -171,7 +171,7 @@ export default function GameLoader() {
 
     return (
         <Box sx={GameLoaderStyle}>
-            <Container maxWidth={"sm"} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflow:'hidden' }}>
+            <Container maxWidth={"sm"} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , position: 'sticky', top: 0, zIndex:'3'}}>
                 <Grid xs={6}>
                     <RoundTimer time={currentRoundTime} progress={progress}/>
                 </Grid>

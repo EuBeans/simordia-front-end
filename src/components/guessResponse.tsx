@@ -24,7 +24,6 @@ export default function GuessResponse() {
         width: "100%",
         height: "100%",
         paddingX: 2,
-        marginY:1,
     }
 
     const responseTextStyle = {
@@ -35,7 +34,6 @@ export default function GuessResponse() {
         fontSize: theme.typography.h5.fontSize,
         fontWeight: theme.typography.h5.fontWeight,
         fontFamily: theme.typography.fontFamily,
-        paddingTop: 2,
 
     }
     

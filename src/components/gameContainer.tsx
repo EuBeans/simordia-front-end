@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Slider,
-  Switch,
-  Typography,
 } from "@mui/material";
 import {theme} from "../assets/theme";
 import { styled } from '@mui/material/styles';
@@ -34,17 +24,18 @@ const GameContainer = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.paper2,
         color: theme.palette.text.primary,
     };
 
     const GameBoxBorderStyle = {
         border: "2px solid",
         borderColor: theme.palette.quadrary.main,
+        backgroundColor: theme.palette.background.default,
         borderRadius: "10px",
         padding: "10px",
         width: "80%",
-        height: "100%",
+        height: "95%",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
