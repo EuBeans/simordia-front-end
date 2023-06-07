@@ -4,10 +4,8 @@ import {
   Container,
 } from "@mui/material";
 import {theme} from "../assets/theme";
-import { styled } from '@mui/material/styles';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
 import GameMenu from "./gameMenu";
-import { useAppDispatch, useAppSelector } from "../utils/useAppDispatch";
+import {  useAppSelector } from "../utils/useAppDispatch";
 import {getCurrentGame} from '../redux/selector/gameSelector';
 import GameManager from "../managers/gameManager";
 import { GameStatus } from "../model/gameModel";

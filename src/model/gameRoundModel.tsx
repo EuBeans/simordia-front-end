@@ -32,6 +32,10 @@ export enum GameRoundStatus {
     skipped = "skipped"
 }
 
+export interface GameRoundStartInput {
+    game_id : string,
+}
+
 export interface EndGameRoundInput {
     game_round_id : string,
     status: GameRoundStatus

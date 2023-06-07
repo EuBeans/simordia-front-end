@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -9,18 +8,15 @@ import {
   Radio,
   RadioGroup,
   Slider,
-  Switch,
   Typography,
   Chip,
   MenuItem,
-  InputLabel,
   Select,
   SelectChangeEvent,
-  List
 } from "@mui/material";
 import {theme} from "../assets/theme";
 import {GameCreateInput, GameLevel, GameMode, GameTheme} from "../model/gameModel";
-import { useAppDispatch, useAppSelector } from "../utils/useAppDispatch";
+import { useAppDispatch } from "../utils/useAppDispatch";
 import { createGameAction, setCurrentGameRoundTime } from "../redux/actions/gameSlice";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -65,7 +61,7 @@ const GameMenu = () => {
     const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY);
     const [selectedTheme, setSelectedTheme] = useState(DEFAULT_THEME);
     const [rounds, setRounds] = useState<number>(DEFAULT_ROUNDS);
-    const [duration, setDuration] = useState<number>(0);
+    const [duration, setDuration] = useState<number>(150);
 
     const dispatch = useAppDispatch();
     

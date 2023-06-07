@@ -1,7 +1,7 @@
 //react component for the input guess field
 import * as React from 'react';
 import {useState} from 'react';
-import {createRoundWord, setCurrentRoundWord} from '../redux/actions/roundWordSlice';
+import {createRoundWord} from '../redux/actions/roundWordSlice';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {theme} from '../assets/theme';

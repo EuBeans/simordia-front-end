@@ -14,7 +14,7 @@ function RoundTimer(
 
 
    // format time
-    const formatTime = (time: number) => {
+    const formatTime = () => {
         const minutes = Math.floor(time / 60);
         let seconds: string | number = time % 60;
         if (seconds < 10) {
@@ -24,11 +24,11 @@ function RoundTimer(
     };
 
 
-    const getCounterColor = (time: number) => {
-        if (time < 10) {
+    const getCounterColor = () => {
+        if (progress < 10) {
             return theme.palette.error.main;
         }
-        else if (time < 30) {
+        else if (progress < 30) {
             return theme.palette.warning.main;
         }
         else {
@@ -37,8 +37,8 @@ function RoundTimer(
     }
 
     
-    const getTextColor = (time: number) => {
-        if (time < 10) {
+    const getTextColor = () => {
+        if (progress < 10) {
             if (time % 2 === 0) {
                 return theme.palette.error.main;
             }
@@ -46,7 +46,7 @@ function RoundTimer(
                 return theme.palette.primary.light;
             }
         }
-        else if (time < 30) {
+        else if (progress < 30) {
             return theme.palette.warning.main;
         }
         else {
@@ -57,14 +57,14 @@ function RoundTimer(
 
     const timerStyle = {
         '& .MuiCircularProgress-circle': {
-            color: getCounterColor(time),
+            color: getCounterColor(),
         },
     }
 
     const timerTextStyle = {
         fontFamily: theme.typography.fontFamily2,
         fontSize: theme.typography.h2.fontSize,
-        color: getTextColor(time),
+        color: getTextColor(),
         textAlign: "center",
     };
 
@@ -89,7 +89,7 @@ function RoundTimer(
                     component="div"
                     color="text.secondary"
                     sx={timerTextStyle}
-                    >{formatTime(time)}</Typography>
+                    >{formatTime()}</Typography>
                 </Box>
         </Box>
     );

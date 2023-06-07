@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {createNewRoundWord,getAllRoundWords} from "../../services/roundWordService";
 import {RoundWord,RoundWordInput,RoundWordListResponse,RoundWordResponse} from "../../model/roundWordModel";
-
+import {getAllGameRoundsAction} from "./gameRoundSlice";
 import { useEffect } from "react";
 
 export interface RoundWordState {
@@ -34,6 +34,7 @@ export const fetchAllRoundWords = createAsyncThunk(
     }
 )
 
+
 export const roundWordSlice = createSlice({
     name: 'roundWord',
     initialState,
@@ -43,6 +44,12 @@ export const roundWordSlice = createSlice({
         },
         setAllRoundWords: (state, action) => {
             state.allRoundWords = action.payload;
+        },
+        resetRoundWordState: (state) => {
+            state.allRoundWords = [];
+            state.currentRoundWord = undefined;
+            state.loading = false;
+            state.error = undefined;
         }
 
     },
@@ -58,7 +65,6 @@ export const roundWordSlice = createSlice({
                     state.error = undefined;
                     //append to allRoundWords
                     action.payload.round_word && state.allRoundWords.push(action.payload.round_word);
-
                 }else{
                     state.error = action.payload.message;
                 }
@@ -81,7 +87,7 @@ export const roundWordSlice = createSlice({
     }
 })
 
-export const {setCurrentRoundWord,setAllRoundWords} = roundWordSlice.actions;
+export const {setCurrentRoundWord,setAllRoundWords, resetRoundWordState} = roundWordSlice.actions;
 
 export default roundWordSlice.reducer;
 

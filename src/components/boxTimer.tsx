@@ -1,12 +1,6 @@
-import LinearProgress from "@mui/material/LinearProgress";
-import * as React from 'react';
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
+
 import Box from '@mui/material/Box';
 import { theme } from '../assets/theme';
-import { makeStyles, styled } from "@mui/material/styles";
 
 import { useState, useEffect } from 'react';
 

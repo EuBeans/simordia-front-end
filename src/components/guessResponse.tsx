@@ -1,11 +1,8 @@
 import * as React from 'react';
-import {useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../utils/useAppDispatch';
+import {useAppSelector} from '../utils/useAppDispatch';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import {theme} from '../assets/theme';
-import { Container, Grid, List, ListItem, ListItemText, styled, Typography } from '@mui/material';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { Grid, List, Typography } from '@mui/material';
 import DistanceBar from './distanceBar';
 import Typical from 'react-typical'
 import { getCurrentRoundWord, getLoading, getError } from '../redux/selector/roundWordSelector';

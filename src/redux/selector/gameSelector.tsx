@@ -10,3 +10,4 @@ export const getError = (state: RootState) => state.game.error;
 export const getCurrentScore = (state: RootState) => state.game.currentScore;
 export const getCurrentGameRoundTime = (state: RootState) => state.game.gameRoundTime;
 export const getIsGameDone = (state: RootState) => state.game.isGameDone;
+export const getShowScoreBoard = (state: RootState) => state.game.showScoreBoard;

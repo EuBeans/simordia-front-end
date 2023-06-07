@@ -1,9 +1,8 @@
 import { Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UserLoginform } from "../model/usersModel";
-import { loginUserAction,setAuth } from "../redux/actions/authSlice";
-import { useAppDispatch, useAppSelector } from '../utils/useAppDispatch';
-import {validateToken} from '../services/authServices';
+import { loginUserAction } from "../redux/actions/authSlice";
+import { useAppDispatch } from '../utils/useAppDispatch';
 
 const UserLogin = () => {
 

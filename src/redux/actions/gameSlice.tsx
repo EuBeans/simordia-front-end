@@ -11,6 +11,7 @@ export interface GameState {
     isGameDone: boolean | undefined;
     gameRoundTime: number|undefined;
     currentScore: number;
+    showScoreBoard: boolean;
     loading: boolean;
     error: string | undefined;
 }
@@ -18,6 +19,7 @@ export interface GameState {
 const initialState: GameState = {
     allGames: [],
     isGameDone: undefined,
+    showScoreBoard: false,
     currentGame: undefined,
     gameRoundTime: 15,
     currentScore: 0,
@@ -84,6 +86,9 @@ export const gameSlice = createSlice({
         },
         setIsGameDone: (state, action) => {
             state.isGameDone = action.payload;
+        },
+        setShowScoreBoard: (state, action) => {
+            state.showScoreBoard = action.payload;
         }
 
     },
@@ -158,6 +163,6 @@ export const gameSlice = createSlice({
     }
 });
 
-export const { setCurrentGame, setAllGames, setCurrentGameRoundTime, setCurrentGameScore,setIsGameDone } = gameSlice.actions;
+export const { setCurrentGame, setAllGames, setCurrentGameRoundTime, setCurrentGameScore,setIsGameDone, setShowScoreBoard } = gameSlice.actions;
 
 export default gameSlice.reducer;

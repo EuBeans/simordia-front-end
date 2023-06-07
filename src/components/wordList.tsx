@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {useState} from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import {theme} from '../assets/theme';
-import { Grid, List, ListItem, ListItemText, styled, Typography } from '@mui/material';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { Grid, List, ListItem} from '@mui/material';
 import DistanceBar from './distanceBar';
 import { getAllRoundWords} from '../redux/selector/roundWordSelector';
-import { useAppDispatch, useAppSelector } from '../utils/useAppDispatch';
+import { useAppSelector } from '../utils/useAppDispatch';
 import { RoundWord } from '../model/roundWordModel';
 
 const MAX_DISTANCE = 700;
@@ -21,9 +17,6 @@ export default function WordList() {
 
         const sortedArray = allCurrentRoundWords.slice().sort((a,b) => a.distance - b.distance);
         setWords(sortedArray);
-            
-        
-
     }, [allCurrentRoundWords]);
 
     const ListBoxStyle = {
@@ -31,8 +24,6 @@ export default function WordList() {
         //set height the parent container
         height: "100%",
         paddingTop: "10px",
-        
-
     }
 
     //render list of words, callback for words

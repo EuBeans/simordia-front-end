@@ -9,9 +9,8 @@ import { getAllRoundWords, getCurrentRoundWord } from '../redux/selector/roundWo
 import GuessInput from './guessInput';
 import WordList from './wordList';
 import GuessResponse from './guessResponse';
-import {getAllGameRoundsAction, setRoundPause } from '../redux/actions/gameRoundSlice';
-import RoundTimer from './roundTimer';
-import React from 'react';
+import {getAllGameRoundsAction, setRoundPause, startGameRoundAction } from '../redux/actions/gameRoundSlice';
+
 
 const GameRound = () => {
 
@@ -108,8 +107,8 @@ const GameRound = () => {
     }
 
     const nextRound = () => {
-     
         currentGame?.game_id && dispatch(getAllGameRoundsAction(currentGame?.game_id))
+        currentGame?.game_id && dispatch(startGameRoundAction({game_id: currentGame?.game_id}))
         dispatch(setRoundPause(false))
     }
 
@@ -124,10 +123,7 @@ const GameRound = () => {
                 return (
                     <Button  sx={NextRoundButtonStyle} onClick={nextRound}>Next Round</Button>
                 )
-            }else if (currentGameWord?.distance === 0 && currentGameRound?.round_number === currentGame?.max_round_number){
-                return (
-                    <Button  sx={NextRoundButtonStyle} onClick={nextRound}>End Game</Button>
-                )
+            
             }
         }
     }

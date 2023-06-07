@@ -2,20 +2,19 @@ import react, { useEffect } from 'react';
 
 import { useAppSelector } from '../utils/useAppDispatch';
 import { getCurrentGame, getCurrentGameRoundTime} from '../redux/selector/gameSelector';
-import { Game as GameModel } from '../model/gameModel';
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import { theme } from '../assets/theme';
-import { styled } from '@mui/material/styles';
 import { useAppDispatch } from '../utils/useAppDispatch';
-import { getCurrentGameRound, getCurrentRoundTime, getRoundPause } from '../redux/selector/gameRoundSelector';
+import { getCurrentGameRound, getRoundPause } from '../redux/selector/gameRoundSelector';
 import GameRound from './gameRound';
 import { updateModel } from '../services/gameService';
-import { createGameRoundAction, endGameRoundAction } from '../redux/actions/gameRoundSlice';
+import { createGameRoundAction, endGameRoundAction, setAllGameRounds, setCurrentGameRound } from '../redux/actions/gameRoundSlice';
+import {resetRoundWordState, setAllRoundWords, setCurrentRoundWord} from '../redux/actions/roundWordSlice';
 import { EndGameRoundInput, GameRoundInput, GameRoundStatus } from '../model/gameRoundModel';
-import { getCurrentScore} from '../redux/selector/gameSelector';
+import { getCurrentScore, getShowScoreBoard} from '../redux/selector/gameSelector';
 import RoundTimer from './roundTimer';
-import React from 'react';
-import { getIsGameDoneAction } from '../redux/actions/gameSlice';
+import { getAllGamesAction, getIsGameDoneAction, setCurrentGame, setIsGameDone, setShowScoreBoard } from '../redux/actions/gameSlice';
+import GameScoreBoard from './gameScoreBoard';
 
 export const convertUTCDateToLocalDate =(date: any) =>{
     var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
@@ -41,26 +40,33 @@ export default function GameLoader() {
 
     const [loadingModel, setLoadingModel] = react.useState(false);
     const [modelLoaded, setModelLoaded] = react.useState(false);
+
+    const [openScoreBoard, setOpenScoreBoard] = react.useState(false);
        
     const [currentRoundTime, setCurrentRoundTime] = react.useState(0);
     const [progress, setProgress] = react.useState(0);
 
     const duration = useAppSelector(getCurrentGameRoundTime) || 0;
+    const showScoreBoard = useAppSelector(getShowScoreBoard);
 
 
 
     const [timeInterval , setTimeInterval] = react.useState<NodeJS.Timer| undefined>(undefined);
 
     useEffect(() => {
-        if(currentGameRound ){
+        
+        if(currentGameRound && currentGameRound.start_time !== 'None'){
             var start_time = convertUTCDateToLocalDate(new Date(currentGameRound.start_time));
             const end_time = new Date(start_time.getTime() + (duration * 1000)); // Calculate the end time by adding the duration to the start time
-
+            
             const countdownInterval = setInterval(() => {
                 const now = new Date(); // Get the current time
                 const end_time_total_seconds = end_time.getMinutes() * 60 + end_time.getSeconds();
                 const now_total_seconds = now.getMinutes() * 60 +  now.getSeconds();
                 const diffInSeconds = end_time_total_seconds- now_total_seconds        
+                
+
+
                 if (diffInSeconds <= 0) { // If the countdown is over, clear the interval
                     clearInterval(countdownInterval);     
                     const gameRoundInput: EndGameRoundInput = {
@@ -69,6 +75,7 @@ export default function GameLoader() {
                     }
 
                     dispatch(endGameRoundAction(gameRoundInput));
+                    dispatch(resetRoundWordState());
                     dispatch(getIsGameDoneAction(currentGameRound?.game_id ));
 
                 } else {
@@ -98,8 +105,32 @@ export default function GameLoader() {
         }
     }
 
-
+    useEffect(() => {
+        if(showScoreBoard){
+            handleOpen();
+        }
+    }, [showScoreBoard]);
     
+    const resetGame = () => {
+        dispatch(getAllGamesAction()).then(() => {
+            dispatch(setAllGameRounds([]))
+            dispatch(setAllRoundWords([]));
+            dispatch(setCurrentGame(undefined));
+            dispatch(setCurrentGameRound(undefined));
+            dispatch(setCurrentRoundWord(undefined));
+            dispatch(setIsGameDone(undefined));
+            dispatch(setShowScoreBoard(false));
+        });
+    }
+    const handleOpen = () => {
+        setOpenScoreBoard(true);
+    }
+
+    const handleClose = () => {
+        setOpenScoreBoard(false);
+        resetGame()
+    }
+
     const GameLoaderStyle = {
         display: "flex",
         flexDirection: "column",
@@ -160,7 +191,6 @@ export default function GameLoader() {
         })
     }
 
-
     const createGameRound = () => {
         if(!currentGame) return;
         const gameRoundInput : GameRoundInput = {
@@ -171,6 +201,9 @@ export default function GameLoader() {
 
     return (
         <Box sx={GameLoaderStyle}>
+
+            <GameScoreBoard open={openScoreBoard} handleClose={handleClose}/>
+
             <Container maxWidth={"sm"} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , position: 'sticky', top: 0, zIndex:'3'}}>
                 <Grid xs={6}>
                     <RoundTimer time={currentRoundTime} progress={progress}/>
@@ -193,7 +226,7 @@ export default function GameLoader() {
                 }
             </Grid>
             }
-
+            
         </Box>
 
     )

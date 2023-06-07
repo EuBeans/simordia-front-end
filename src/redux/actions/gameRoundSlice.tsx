@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {createNewGameRound,getAllGameRounds,endGameRound} from "../../services/gameRoundService";
+import {createNewGameRound,getAllGameRounds,endGameRound, startGameRound} from "../../services/gameRoundService";
 import { GameRound,GameRoundInput,GameRoundListResponse,GameRoundResponse,GameRoundStatus} from "../../model/gameRoundModel";
 
 
@@ -35,6 +35,14 @@ export const getAllGameRoundsAction = createAsyncThunk(
     "gameRound/getAllGameRounds",
     async (game_id: string) => {
         const response = await getAllGameRounds(game_id);
+        return response;
+    }
+);
+
+export const startGameRoundAction = createAsyncThunk(
+    "gameRound/startGameRound",
+    async (gameRoundStartIput: {game_id: string}) => {
+        const response = await startGameRound(gameRoundStartIput);
         return response;
     }
 );
@@ -102,9 +110,29 @@ export const gameRoundSlice = createSlice({
             }
             action.payload.new_game_round && state.allGameRounds.push(action.payload.new_game_round);
             state.currentGameRound = action.payload.new_game_round;
+            
         }
         );
         builder.addCase(endGameRoundAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        }
+        );
+
+        builder.addCase(startGameRoundAction.pending, (state, action) => {
+            state.loading = true;
+        }
+        );
+        builder.addCase(startGameRoundAction.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.allGameRounds.findIndex((gameRound) => gameRound.round_id === action.payload.game_round.round_id);
+            if (index !== -1) {
+                state.allGameRounds[index] = action.payload.game_round;
+            }
+            state.currentGameRound = action.payload.game_round;
+        }
+        );
+        builder.addCase(startGameRoundAction.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         }

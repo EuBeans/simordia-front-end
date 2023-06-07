@@ -2,7 +2,7 @@
 //
 
 import axios from "axios";
-import {GameRound,GameRoundListResponse,GameRoundResponse,GameRoundInput, EndGameRoundResponse, EndGameRoundInput} from "../model/gameRoundModel";
+import {GameRound,GameRoundListResponse,GameRoundResponse,GameRoundInput, EndGameRoundResponse, EndGameRoundInput, GameRoundStartInput} from "../model/gameRoundModel";
 import {url} from "./authServices";
 const baseUrl = `${url}/game_round`;
 
@@ -14,6 +14,11 @@ export const createNewGameRound = async (gameRound: GameRoundInput) : Promise<Ga
 
 export const getAllGameRounds = async (game_id: string) : Promise<GameRoundListResponse> => {
     const response = await axios.get(`${baseUrl}/${game_id}`);
+    return response.data;
+}
+
+export const startGameRound = async (gameRoundStartIput: GameRoundStartInput) : Promise<GameRoundResponse> => {
+    const response = await axios.patch(`${baseUrl}/start`, gameRoundStartIput);
     return response.data;
 }
 
