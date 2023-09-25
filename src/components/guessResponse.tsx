@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import {theme} from '../assets/theme';
 import { Grid, List, Typography } from '@mui/material';
 import DistanceBar from './distanceBar';
-import Typical from 'react-typical'
 import { getCurrentRoundWord, getLoading, getError } from '../redux/selector/roundWordSelector';
 
 
@@ -41,11 +40,7 @@ export default function GuessResponse() {
 
             {currentGuess === undefined && isLoading ?
                 <Typography variant="h5" sx={responseTextStyle}>
-                    <Typical
-                        steps={loadingResponse}
-                        loop={1}
-                        wrapper="span"
-                    />
+                    {loadingResponse}
                 </Typography>
                 :
                 currentGuess  &&  !wordError  ?
@@ -56,12 +51,7 @@ export default function GuessResponse() {
                     wordError ?
       
                         <Typography variant="h5" sx={responseTextStyle}>
-                            <Typical
-
-                                steps={errorResponse}
-                                loop={1}
-                                wrapper="span"
-                            />
+                            {errorResponse}
                         </Typography> 
                         : null
             }
