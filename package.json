@@ -31,9 +31,8 @@
     "npm": "8.3"
   },
   "scripts": {
-    "start": "node server.js",
-    "install": "npm install",
-    "heroku-postbuild": "npm install --legacy-peer-deps && npm run build", 
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
